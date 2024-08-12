@@ -1,4 +1,4 @@
-package ru.shop.PrimeCloud.dao;
+package ru.shop.PrimeCloud.models;
 
 import lombok.Getter;
 import lombok.Setter;

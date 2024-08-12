@@ -10,5 +10,4 @@ public class PrimeCloudApplication {
 		System.out.println("sanya 4e4en");
 		SpringApplication.run(PrimeCloudApplication.class, args);
 	}
-
 }
