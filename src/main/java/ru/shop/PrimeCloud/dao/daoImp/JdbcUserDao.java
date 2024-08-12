@@ -3,6 +3,7 @@ package ru.shop.PrimeCloud.dao.daoImp;
 import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.shop.PrimeCloud.configs.DataSourceConfig;
 import ru.shop.PrimeCloud.dao.UserDao;
@@ -18,6 +19,8 @@ import java.util.Set;
 @Component
 public class JdbcUserDao implements UserDao {
     private static final Logger LOGGER = LoggerFactory.getLogger(JdbcUserDao.class);
+
+    @Autowired
     private DataSource dataSource;
 
     @Override

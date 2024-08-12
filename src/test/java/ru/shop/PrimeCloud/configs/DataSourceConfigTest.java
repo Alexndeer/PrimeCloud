@@ -17,18 +17,20 @@ class DataSourceConfigTest {
 
     @Test
     public void testSimpleDataSource() {
-        ApplicationContext ctx = new AnnotationConfigApplicationContext(DataSourceConfig.class);
+        AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(DataSourceConfig.class);
         DataSource dataSource = ctx.getBean("dataSource", DataSource.class);
         assertNotNull(dataSource);
         testDataSource(dataSource);
+        ctx.close();
     }
 
     @Test
     public void testEmbeddedDataSource(){
-        ApplicationContext ctx = new AnnotationConfigApplicationContext(EmbeddedJdbcConfig.class);
+        AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(EmbeddedJdbcConfig.class);
         DataSource dataSource = ctx.getBean("dataSource", DataSource.class);
         assertNotNull(dataSource);
         testDataSource(dataSource);
+        ctx.close();
     }
 
     private void testDataSource(DataSource dataSource) {

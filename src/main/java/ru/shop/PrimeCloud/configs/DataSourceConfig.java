@@ -19,18 +19,19 @@ public class DataSourceConfig {
     @Value("${jdbc.driverClassName}")
     private String driverClassName;
 
-    @Value("${jdbc.url")
+    @Value("${jdbc.url}")
     private String url;
 
-    @Value("${jdbc.username")
+    @Value("${jdbc.username}")
     private String username;
 
-    @Value("${jdbc.password")
+    @Value("${jdbc.password}")
     private String password;
 
     @Bean
     public DataSource dataSource() {
-        try (BasicDataSource dataSource = new BasicDataSource()) {
+        try {
+            BasicDataSource dataSource = new BasicDataSource();
             dataSource.setDriverClassName(driverClassName);
             dataSource.setUrl(url);
             dataSource.setUsername(username);

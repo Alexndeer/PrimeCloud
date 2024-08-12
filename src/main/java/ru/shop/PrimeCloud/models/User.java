@@ -2,10 +2,12 @@ package ru.shop.PrimeCloud.models;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import ru.shop.PrimeCloud.enums.Roles;
 
 @Getter
 @Setter
+@ToString
 public class User {
 
     private long id;
