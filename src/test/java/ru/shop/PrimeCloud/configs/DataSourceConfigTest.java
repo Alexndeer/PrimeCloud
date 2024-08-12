@@ -23,6 +23,14 @@ class DataSourceConfigTest {
         testDataSource(dataSource);
     }
 
+    @Test
+    public void testEmbeddedDataSource(){
+        ApplicationContext ctx = new AnnotationConfigApplicationContext(EmbeddedJdbcConfig.class);
+        DataSource dataSource = ctx.getBean("dataSource", DataSource.class);
+        assertNotNull(dataSource);
+        testDataSource(dataSource);
+    }
+
     private void testDataSource(DataSource dataSource) {
         try (Connection conn = dataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement("SELECT 1");

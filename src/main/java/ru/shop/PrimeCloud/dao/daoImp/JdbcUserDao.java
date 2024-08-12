@@ -10,10 +10,8 @@ import ru.shop.PrimeCloud.enums.Roles;
 import ru.shop.PrimeCloud.models.User;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Setter
@@ -24,7 +22,25 @@ public class JdbcUserDao implements UserDao {
 
     @Override
     public Set<User> findAll() {
-        return Set.of();
+        Set<User> userSet = new HashSet<>();
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM users")) {
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                User user = new User();
+                user.setId(rs.getInt("id"));
+                user.setEmail(rs.getString("email"));
+                user.setPassword(rs.getString("password"));
+                user.setName(rs.getString("name"));
+                user.setPhoneNumber(rs.getString("phone_number"));
+                user.setRoles(Roles.getRole(rs.getInt("role")));
+                userSet.add(user);
+            }
+            return userSet;
+        } catch (SQLException e) {
+            LOGGER.error("Problem when executing SELECT *", e);
+        }
+        return null;
     }
 
     @Override
@@ -33,7 +49,7 @@ public class JdbcUserDao implements UserDao {
         try (Connection conn = dataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement("SELECT * FROM users WHERE email=" + email);
              ResultSet rs = stmt.executeQuery()) {
-            while (rs.next()){
+            while (rs.next()) {
                 user.setId(rs.getInt("id"));
                 user.setEmail(email);
                 user.setPassword(rs.getString("password"));
@@ -43,7 +59,7 @@ public class JdbcUserDao implements UserDao {
             }
             return user;
         } catch (Exception e) {
-           LOGGER.error("Problem when executing SELECT!", e);
+            LOGGER.error("Problem when executing SELECT!", e);
         }
         return null;
     }
@@ -51,5 +67,22 @@ public class JdbcUserDao implements UserDao {
     @Override
     public User insert(User user) {
         return null;
+//        try (Connection conn = dataSource.getConnection();
+//             PreparedStatement stmt = conn.prepareStatement("INSERT INTO users (email, password, phone_number, name, role) values (?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS)) {
+//            stmt.setString(1, user.getEmail());
+//            stmt.setString(2, user.getPassword());
+//            stmt.setString(3, user.getPhoneNumber());
+//            stmt.setString(4, user.getName());
+//            stmt.setInt(5, user.getRoles().ordinal());
+//            stmt.execute();
+//            ResultSet generatedKeys = stmt.getGeneratedKeys();
+//            if (generatedKeys.next()) {
+//                user.setId(generatedKeys.getLong(1));
+//            }
+//            return user;
+//        } catch (SQLException e) {
+//            LOGGER.error("Problem when executing INSERT!", e);
+//        }
+//        return null;
     }
 }
