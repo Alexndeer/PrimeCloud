@@ -69,23 +69,27 @@ public class JdbcUserDao implements UserDao {
 
     @Override
     public User insert(User user) {
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement stmt = conn.prepareStatement("INSERT INTO users (email, password, phone_number, name, role) values (?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS)) {
+            stmt.setString(1, user.getEmail());
+            stmt.setString(2, user.getPassword());
+            stmt.setString(3, user.getPhoneNumber());
+            stmt.setString(4, user.getName());
+            stmt.setInt(5, user.getRoles().ordinal());
+            stmt.execute();
+            ResultSet generatedKeys = stmt.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                user.setId(generatedKeys.getLong(1));
+            }
+            return user;
+        } catch (SQLException e) {
+            LOGGER.error("Problem when executing INSERT!", e);
+        }
         return null;
-//        try (Connection conn = dataSource.getConnection();
-//             PreparedStatement stmt = conn.prepareStatement("INSERT INTO users (email, password, phone_number, name, role) values (?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS)) {
-//            stmt.setString(1, user.getEmail());
-//            stmt.setString(2, user.getPassword());
-//            stmt.setString(3, user.getPhoneNumber());
-//            stmt.setString(4, user.getName());
-//            stmt.setInt(5, user.getRoles().ordinal());
-//            stmt.execute();
-//            ResultSet generatedKeys = stmt.getGeneratedKeys();
-//            if (generatedKeys.next()) {
-//                user.setId(generatedKeys.getLong(1));
-//            }
-//            return user;
-//        } catch (SQLException e) {
-//            LOGGER.error("Problem when executing INSERT!", e);
-//        }
-//        return null;
+    }
+
+    @Override
+    public String findNameByEmail(String email) {
+        return "";
     }
 }
