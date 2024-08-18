@@ -42,18 +42,22 @@ public class JdbcTemplateUserDao implements UserDao {
     }
 
     @Override
+    public void removeByEmail(String email) {
+
+    }
+
+    @Override
     public User findUserByEmail(String email) {
-        return jdbcTemplate.queryForObject("SELECT id, password FROM users WHERE email = ?", (rs, rowNum) -> {
+        return jdbcTemplate.queryForObject("SELECT * FROM users WHERE email = ?", (rs, rowNum) -> {
             User user = new User();
             user.setId(rs.getLong(1));
+            user.setEmail(rs.getString("email"));
             user.setPassword(rs.getString("password"));
+            user.setPhoneNumber(rs.getString("phone_number"));
+            user.setName(rs.getString("name"));
+            user.setRoles(Roles.getRole(rs.getInt("role")));
             return user;
         }, email);
-//        Map<String, Object> stringObjectMap = jdbcTemplate.queryForMap("SELECT * FROM users WHERE email = ?", email);
-//        for (String tmp : stringObjectMap.keySet()) {
-//            System.out.println(tmp);
-//        }
-//        return null;
     }
 
     @Override

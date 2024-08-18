@@ -13,4 +13,6 @@ public interface UserDao {
     User insert(User user);
 
     String findNameByEmail(String email);
+
+    public void removeByEmail(String email);
 }

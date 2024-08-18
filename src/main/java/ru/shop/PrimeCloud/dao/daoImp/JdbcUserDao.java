@@ -5,7 +5,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import ru.shop.PrimeCloud.configs.DataSourceConfig;
 import ru.shop.PrimeCloud.dao.UserDao;
 import ru.shop.PrimeCloud.enums.Roles;
 import ru.shop.PrimeCloud.models.User;
@@ -91,5 +90,10 @@ public class JdbcUserDao implements UserDao {
     @Override
     public String findNameByEmail(String email) {
         return "";
+    }
+
+    @Override
+    public void removeByEmail(String email) {
+
     }
 }
